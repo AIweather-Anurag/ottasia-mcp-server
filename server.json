@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.AIweather-Anurag/ottasia",
+  "description": "Where to watch X in Y? 30 Asian and Middle Eastern streaming markets, via Claude.",
+  "repository": {
+    "url": "https://github.com/AIweather-Anurag/ottasia-mcp-server",
+    "source": "github"
+  },
+  "version": "0.1.3",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@ottasia/mcp-server",
+      "version": "0.1.3",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://ottasia.com/api/mcp/sse"
+    }
+  ]
+}

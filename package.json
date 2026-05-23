@@ -1,0 +1,41 @@
+{
+  "name": "@ottasia/mcp-server",
+  "version": "0.1.3",
+  "mcpName": "io.github.AIweather-Anurag/ottasia",
+  "description": "OTTASIA MCP server: answer 'where can I watch X in Y' for 30 Asian streaming markets, callable from Claude Desktop.",
+  "type": "module",
+  "bin": {
+    "ottasia-mcp": "dist/server.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ottasia",
+    "streaming",
+    "asia",
+    "claude"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AIweather-Anurag/ottasia-mcp-server.git"
+  },
+  "homepage": "https://ottasia.com",
+  "author": "Anurag Tyagi <anurag.tya@gmail.com>",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "typescript": "^6.0.3"
+  }
+}
