@@ -1,153 +1,151 @@
-# MCP Registry
+# @ottasia/mcp-server
 
-The MCP registry provides MCP clients with a list of MCP servers, like an app store for MCP servers.
+[![npm version](https://img.shields.io/npm/v/@ottasia/mcp-server.svg)](https://www.npmjs.com/package/@ottasia/mcp-server)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-published-green)](https://registry.modelcontextprotocol.io/v0.1/servers?search=ottasia)
 
-[**📤 Publish my MCP server**](docs/modelcontextprotocol-io/quickstart.mdx) | [**⚡️ Live API docs**](https://registry.modelcontextprotocol.io/docs) | [**👀 Ecosystem vision**](docs/design/ecosystem-vision.md) | 📖 **[Full documentation](./docs)**
+> Where can I watch X in Y? Answer that question, in your AI assistant, for 30 Asian and Middle Eastern streaming markets.
 
-## Development Status
+OTTASIA's Model Context Protocol server gives Claude (and any MCP-compatible client) live access to streaming availability across India, Pakistan, Bangladesh, Indonesia, Malaysia, Philippines, Singapore, Thailand, Myanmar, Cambodia, Laos, Brunei, China, Hong Kong, Japan, Korea, Taiwan, Kazakhstan, Uzbekistan, Turkey, Israel, Lebanon, Jordan, Saudi Arabia, UAE, Kuwait, Qatar, Bahrain, Oman, and Egypt.
 
-**2025-10-24 update**: The Registry API has entered an **API freeze (v0.1)** 🎉. For the next month or more, the API will remain stable with no breaking changes, allowing integrators to confidently implement support. This freeze applies to v0.1 while development continues on v0. We'll use this period to validate the API in real-world integrations and gather feedback to shape v1 for general availability. Thank you to everyone for your contributions and patience—your involvement has been key to getting us here!
+It wraps [ottasia.com](https://ottasia.com), so the same data that powers our website is one prompt away.
 
-**2025-09-08 update**: The registry has launched in preview 🎉 ([announcement blog post](https://blog.modelcontextprotocol.io/posts/2025-09-08-mcp-registry-preview/)). While the system is now more stable, this is still a preview release and breaking changes or data resets may occur. A general availability (GA) release will follow later. We'd love your feedback in [GitHub discussions](https://github.com/modelcontextprotocol/registry/discussions/new?category=ideas) or in the [#registry-dev Discord](https://discord.com/channels/1358869848138059966/1369487942862504016) ([joining details here](https://modelcontextprotocol.io/community/communication)).
+---
 
-Current key maintainers:
-- **Adam Jones** (Anthropic) [@domdomegg](https://github.com/domdomegg)  
-- **Tadas Antanavicius** (PulseMCP) [@tadasant](https://github.com/tadasant)
-- **Toby Padilla** (GitHub) [@toby](https://github.com/toby)
-- **Radoslav (Rado) Dimitrov** (Stacklok) [@rdimitrov](https://github.com/rdimitrov)
+## Install (Claude Desktop)
 
-## Contributing
+Add this to your Claude Desktop config file:
 
-We use multiple channels for collaboration - see [modelcontextprotocol.io/community/communication](https://modelcontextprotocol.io/community/communication).
+- **Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-Often (but not always) ideas flow through this pipeline:
-
-- **[Discord](https://modelcontextprotocol.io/community/communication)** - Real-time community discussions
-- **[Discussions](https://github.com/modelcontextprotocol/registry/discussions)** - Propose and discuss product/technical requirements
-- **[Issues](https://github.com/modelcontextprotocol/registry/issues)** - Track well-scoped technical work  
-- **[Pull Requests](https://github.com/modelcontextprotocol/registry/pulls)** - Contribute work towards issues
-
-### Quick start:
-
-#### Pre-requisites
-
-- **Docker**
-- **Go 1.24.x**
-- **ko** - Container image builder for Go ([installation instructions](https://ko.build/install/))
-- **golangci-lint v2.4.0**
-
-#### Running the server
-
-```bash
-# Start full development environment
-make dev-compose
+```json
+{
+  "mcpServers": {
+    "ottasia": {
+      "command": "npx",
+      "args": ["-y", "@ottasia/mcp-server"]
+    }
+  }
+}
 ```
 
-This starts the registry at [`localhost:8080`](http://localhost:8080) with PostgreSQL. The database uses ephemeral storage and is reset each time you restart the containers, ensuring a clean state for development and testing.
+Restart Claude Desktop. The OTTASIA tools should appear in the tool list.
 
-**Note:** The registry uses [ko](https://ko.build) to build container images. The `make dev-compose` command automatically builds the registry image with ko and loads it into your local Docker daemon before starting the services.
+No API keys. No env vars. Nothing to configure.
 
-By default, the registry seeds from the production API with a filtered subset of servers (to keep startup fast). This ensures your local environment mirrors production behavior and all seed data passes validation. For offline development you can seed from a file without validation with `MCP_REGISTRY_SEED_FROM=data/seed.json MCP_REGISTRY_ENABLE_REGISTRY_VALIDATION=false make dev-compose`.
+---
 
-The setup can be configured with environment variables in [docker-compose.yml](./docker-compose.yml) - see [.env.example](./.env.example) for a reference.
+## Tools
 
-<details>
-<summary>Alternative: Running a pre-built Docker image</summary>
+### `where_to_watch`
 
-Pre-built Docker images are automatically published to GitHub Container Registry. Note that the image does not bundle PostgreSQL, so you need to run your own and point the registry at it via `MCP_REGISTRY_DATABASE_URL` (see [docker-compose.yml](./docker-compose.yml) for a working example):
+> Find which streaming services carry a specific movie or TV show in a specific country.
 
-```bash
-# Run latest stable release
-docker run -p 8080:8080 ghcr.io/modelcontextprotocol/registry:latest
+**Inputs:**
+- `title` (string, required): movie or TV show name
+- `country` (2-letter ISO code, optional, default `IN`)
 
-# Run latest from main branch (continuous deployment)
-docker run -p 8080:8080 ghcr.io/modelcontextprotocol/registry:main
+**Example prompts:**
+- "Where can I watch Squid Game in Indonesia?"
+- "Is Pathaan available on any service in Saudi Arabia?"
+- "Use the ottasia where_to_watch tool to find Game of Thrones in Japan."
 
-# Run specific release version
-docker run -p 8080:8080 ghcr.io/modelcontextprotocol/registry:v1.0.0
+### `whats_new_on`
 
-# Run development build from main branch
-docker run -p 8080:8080 ghcr.io/modelcontextprotocol/registry:main-20250906-abc123d
+> List the latest titles added to a specific streaming service in a country.
+
+**Inputs:**
+- `provider` (slug, required): e.g. `netflix`, `prime-video`, `disney-plus-hotstar`, `wavve`, `shahid`, `viu`
+- `country` (2-letter ISO code, optional, default `IN`)
+- `limit` (number, optional, default 15, max 30)
+
+**Example prompts:**
+- "What's new on Netflix in India this month?"
+- "Any new K-dramas added to Wavve in Korea?"
+- "List recent arrivals on Shahid in Saudi Arabia."
+
+### `search_titles`
+
+> Multi-result search for movies and TV shows. Returns multiple candidates so you can disambiguate before checking availability.
+
+**Inputs:**
+- `q` (string, required): search query
+- `country` (2-letter ISO code, optional, default `IN`)
+- `limit` (number, optional, default 8, max 20)
+
+**Example prompts:**
+- "Search OTTASIA for 'the office'"
+- "Find all matches for 'joker' and tell me which one is the 2019 Joaquin Phoenix film."
+
+---
+
+## Supported countries
+
+`IN` India · `PK` Pakistan · `BD` Bangladesh · `ID` Indonesia · `MY` Malaysia · `PH` Philippines · `SG` Singapore · `TH` Thailand · `MM` Myanmar · `KH` Cambodia · `LA` Laos · `BN` Brunei · `CN` China · `HK` Hong Kong · `JP` Japan · `KR` South Korea · `TW` Taiwan · `KZ` Kazakhstan · `UZ` Uzbekistan · `TR` Turkey · `IL` Israel · `LB` Lebanon · `JO` Jordan · `SA` Saudi Arabia · `AE` UAE · `KW` Kuwait · `QA` Qatar · `BH` Bahrain · `OM` Oman · `EG` Egypt
+
+## Common providers
+
+`netflix` · `prime-video` · `disney-plus-hotstar` · `jiohotstar` · `hulu-japan` · `wavve` · `tving` · `viu` · `vidio` · `iqiyi` · `shahid` · `osn-plus` · `starzplay` · `hoichoi` · `chorki` · `zee5` · `sun-nxt` · `aha` · `eros-now` · `manorama-max` · `shemaroo-me` · `crunchyroll` · `apple-tv-plus` · `hbo-max`
+
+Pass any of these as the `provider` argument to `whats_new_on`. The API will suggest near-matches if the slug is wrong.
+
+---
+
+## How it works
+
+The MCP server is a thin client that calls public JSON endpoints on [ottasia.com](https://ottasia.com):
+
+- `/api/mcp/where-to-watch?title=...&country=...`
+- `/api/mcp/whats-new?provider=...&country=...&limit=...`
+- `/api/mcp/search?q=...&country=...&limit=...`
+
+All TMDB data, caching, and per-country provider logic stays on the OTTASIA backend, so your installed npm package never holds an API key.
+
+### Alternate transport: HTTP/SSE
+
+If you're integrating from a non-Claude-Desktop client (Claude API, browser-based MCP playground, custom code), you can connect directly to the hosted HTTP endpoint:
+
+```
+https://ottasia.com/api/mcp/sse
 ```
 
-**Available tags:** 
-- **Releases**: `latest`, `v1.0.0`, `v1.1.0`, etc.
-- **Continuous**: `main` (latest main branch build)
-- **Development**: `main-<date>-<sha>` (specific commit builds)
+Uses the MCP Streamable HTTP transport (stateless, JSON responses). Same 3 tools, same data.
 
-</details>
+### Local development override
 
-#### Publishing a server
+To run against a local OTTASIA dev server, set `OTTASIA_BASE_URL=http://localhost:3000` in your MCP config:
 
-To publish a server, we've built a simple CLI. You can use it with:
-
-```bash
-# Build the latest CLI
-make publisher
-
-# Use it!
-./bin/mcp-publisher --help
+```json
+{
+  "mcpServers": {
+    "ottasia-local": {
+      "command": "node",
+      "args": ["/absolute/path/to/this/repo/dist/server.js"],
+      "env": { "OTTASIA_BASE_URL": "http://localhost:3000" }
+    }
+  }
+}
 ```
 
-See [the publisher guide](./docs/modelcontextprotocol-io/quickstart.mdx) for more details.
+---
 
-#### Other commands
+## Listings
 
-```bash
-# Run lint, unit tests and integration tests
-make check
-```
+- npm: [@ottasia/mcp-server](https://www.npmjs.com/package/@ottasia/mcp-server)
+- Official MCP Registry: [io.github.AIweather-Anurag/ottasia](https://registry.modelcontextprotocol.io/v0.1/servers?search=ottasia)
+- [mcp.so](https://mcp.so/server/ottasia/AIweather-Anurag)
+- [Smithery](https://smithery.ai/server/@ottasia/mcp-server)
+- [Glama](https://glama.ai/mcp/servers/AIweather-Anurag/ottasia-mcp-server) (review pending)
+- [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) (PR #6808 pending)
+- [Cline marketplace](https://github.com/cline/cline/discussions/1650) (submitted)
 
-There are also a few more helpful commands for development. Run `make help` to learn more, or look in [Makefile](./Makefile).
+## Links
 
-<!--
-For Claude and other AI tools: Always prefer make targets over custom commands where possible.
--->
+- Website: [ottasia.com](https://ottasia.com)
+- Issues: open an issue on this repo or DM [@AnuragTyagi on X](https://x.com/AnuragTyagi)
+- MCP spec: [modelcontextprotocol.io](https://modelcontextprotocol.io)
 
-## Architecture
+## License
 
-### Project Structure
-
-```
-├── cmd/                     # Application entry points
-│   └── publisher/           # Server publishing tool
-├── data/                    # Seed data
-├── deploy/                  # Deployment configuration (Pulumi)
-├── docs/                    # Documentation
-├── internal/                # Private application code
-│   ├── api/                 # HTTP handlers and routing
-│   ├── auth/                # Authentication (GitHub OAuth, JWT, namespace blocking)
-│   ├── config/              # Configuration management
-│   ├── database/            # Data persistence (PostgreSQL)
-│   ├── service/             # Business logic
-│   ├── telemetry/           # Metrics and monitoring
-│   └── validators/          # Input validation
-├── pkg/                     # Public packages
-│   ├── api/                 # API types and structures
-│   │   └── v0/              # Version 0 API types
-│   └── model/               # Data models for server.json
-├── scripts/                 # Development and testing scripts
-├── tests/                   # Integration tests
-└── tools/                   # CLI tools and utilities
-    └── validate-*.sh        # Schema validation tools
-```
-
-### Authentication
-
-Publishing supports multiple authentication methods:
-- **GitHub OAuth** - For publishing by logging into GitHub
-- **GitHub OIDC** - For publishing from GitHub Actions
-- **DNS verification** - For proving ownership of a domain and its subdomains
-- **HTTP verification** - For proving ownership of a domain
-
-The registry validates namespace ownership when publishing. E.g. to publish...:
-- `io.github.domdomegg/my-cool-mcp` you must login to GitHub as `domdomegg`, or be in a GitHub Action on domdomegg's repos
-- `me.adamjones/my-cool-mcp` you must prove ownership of `adamjones.me` via DNS or HTTP challenge
-
-## Community Projects
-
-Check out [community projects](docs/community-projects.md) to explore notable registry-related work created by the community.
-
-## More documentation
-
-See the [documentation](./docs) for more details if your question has not been answered here!
+MIT
