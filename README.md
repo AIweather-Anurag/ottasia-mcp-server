@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@ottasia/mcp-server.svg)](https://www.npmjs.com/package/@ottasia/mcp-server)
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-published-green)](https://registry.modelcontextprotocol.io/v0.1/servers?search=ottasia)
+[![Glama](https://glama.ai/mcp/servers/badge?serverId=AIweather-Anurag/ottasia-mcp-server)](https://glama.ai/mcp/servers/AIweather-Anurag/ottasia-mcp-server)
 
 > Where can I watch X in Y? Answer that question, in your AI assistant, for 30 Asian and Middle Eastern streaming markets.
 
@@ -136,7 +137,7 @@ To run against a local OTTASIA dev server, set `OTTASIA_BASE_URL=http://localhos
 - Official MCP Registry: [io.github.AIweather-Anurag/ottasia](https://registry.modelcontextprotocol.io/v0.1/servers?search=ottasia)
 - [mcp.so](https://mcp.so/server/ottasia/AIweather-Anurag)
 - [Smithery](https://smithery.ai/server/@ottasia/mcp-server)
-- [Glama](https://glama.ai/mcp/servers/AIweather-Anurag/ottasia-mcp-server) (review pending)
+- [Glama](https://glama.ai/mcp/servers/AIweather-Anurag/ottasia-mcp-server)
 - [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) (PR #6808 pending)
 - [Cline marketplace](https://github.com/cline/cline/discussions/1650) (submitted)
 
