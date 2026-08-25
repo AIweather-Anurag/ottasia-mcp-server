@@ -147,6 +147,17 @@ To run against a local OTTASIA dev server, set `OTTASIA_BASE_URL=http://localhos
 - Issues: open an issue on this repo or DM [@AnuragTyagi on X](https://x.com/AnuragTyagi)
 - MCP spec: [modelcontextprotocol.io](https://modelcontextprotocol.io)
 
+## Privacy Policy
+
+This server is a read-only lookup tool. It sends only the query your AI
+assistant makes (a title name, a streaming service, a two-letter country
+code) to OTTASIA's public API at ottasia.com and returns streaming
+availability data with links back to ottasia.com. It does not collect,
+store, or transmit personal data, credentials, files, or conversation
+content, and it requires no account or API key.
+
+Full privacy policy: https://ottasia.com/privacy
+
 ## License
 
 MIT

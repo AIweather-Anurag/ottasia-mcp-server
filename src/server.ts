@@ -24,7 +24,7 @@ import { registerSearchTitles } from "./tools/searchTitles.js";
 
 const server = new McpServer({
   name: "ottasia",
-  version: "0.1.0",
+  version: "0.1.3",
 });
 
 registerWhereToWatch(server);
@@ -37,4 +37,4 @@ await server.connect(transport);
 // MCP clients communicate over stdio, so anything we'd normally write to
 // stdout would corrupt the JSON-RPC stream. Diagnostic messages must go
 // to stderr — Claude Desktop captures these in its MCP logs.
-console.error("OTTASIA MCP server v0.1.0 running on stdio");
+console.error("OTTASIA MCP server v0.1.3 running on stdio");

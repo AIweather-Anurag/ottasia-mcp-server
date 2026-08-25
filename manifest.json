@@ -1,0 +1,40 @@
+{
+  "manifest_version": "0.3",
+  "name": "ottasia",
+  "display_name": "OTTASIA",
+  "version": "0.1.3",
+  "description": "Ask where to watch any movie, show, or anime across 30+ Asian countries. Country-accurate streaming availability, what's new per platform, and title search.",
+  "author": {
+    "name": "Anurag Tyagi",
+    "email": "hello@ottasia.com",
+    "url": "https://github.com/AIweather-Anurag"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "dist/server.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/server.js"],
+      "env": {}
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AIweather-Anurag/ottasia-mcp-server.git"
+  },
+  "homepage": "https://ottasia.com",
+  "documentation": "https://ottasia.com/mcp",
+  "license": "MIT",
+  "privacy_policies": ["https://ottasia.com/privacy"],
+  "icon": "icon.png",
+  "keywords": ["streaming", "movies", "tv", "anime", "asia", "india", "where-to-watch"],
+  "tools": [
+    { "name": "where_to_watch", "description": "Find which streaming services carry a movie or show in a specific country" },
+    { "name": "whats_new_on", "description": "List recent arrivals on a streaming service in a specific country" },
+    { "name": "search_titles", "description": "Search movies, shows and anime by name, including regional-language titles" }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=18.0.0" }
+  }
+}
