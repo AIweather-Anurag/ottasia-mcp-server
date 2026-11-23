@@ -4,6 +4,7 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-published-green)](https://registry.modelcontextprotocol.io/v0.1/servers?search=ottasia)
 [![Glama](https://glama.ai/mcp/servers/badge?serverId=AIweather-Anurag/ottasia-mcp-server)](https://glama.ai/mcp/servers/AIweather-Anurag/ottasia-mcp-server)
+[![mcptry](https://mcptry.com/badge/io.github.AIweather-Anurag/ottasia)](https://mcptry.com/servers/io.github.AIweather-Anurag/ottasia)
 
 > Where can I watch X in Y? Answer that question, in your AI assistant, for 30 Asian and Middle Eastern streaming markets.
 
